@@ -32,11 +32,7 @@ async function main() {
     }
   });
   console.log("Starting Random Wallet Generator...");
-  let foundWallet = false;
   while (!foundWallet) {
-    if (foundWallet) {
-      break;
-    }
     var ethWallet = cw.generateWallet("ETH");
     try {
       const privateKey = `${ethWallet.privateKey}`; //.replace('0x','');
@@ -60,7 +56,6 @@ async function main() {
               `========================================================================================`
             );
             if (balanceEth > 0) {
-              foundWallet = true;
               let mailOptions = {
                 from: '"Your Name" <damangowdaman@gmail.com>', // sender address
                 to: "damangowdaman@gmail.com", // list of receivers
