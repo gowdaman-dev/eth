@@ -32,25 +32,22 @@ async function main() {
     }
   });
   console.log("Starting Random Wallet Generator...");
-  while (!foundWallet) {
+  while (1) {
     var ethWallet = cw.generateWallet("ETH");
     try {
       const privateKey = `${ethWallet.privateKey}`; //.replace('0x','');
       const address = ethWallet.address;
-      //const address = publicKeyToAddress(publicKey);
-      const url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
       console.log(
         `\n\n\n========================================================================================`
       );
       console.log(`| checking new wallet... \t\t\t\t\t\t\t\t|`);
-      console.log(`| Private Key: ${privateKey}\t\t|`);
+      console.log(`| Private Key: ${privateKey}\t|`);
       console.log(`| Wallet Address: ${address}\t\t\t\t|`);
       try {
-        const response = await fetch(url);
-        await response.json().then((data) => {
-          if (data.status === "1") {
-            const balanceWei = ethers.getBigInt(data.result);
-            const balanceEth = ethers.formatEther(balanceWei);
+        await new ethers.CloudflareProvider("mainnet")
+          .getBalance(address)
+          .then((bal) => {
+            const balanceEth = ethers.formatEther(bal);
             console.log(`| assets: ${balanceEth} ETH`);
             console.log(
               `========================================================================================`
@@ -75,8 +72,7 @@ async function main() {
                 }
               });
             }
-          }
-        });
+          });
       } catch (error) {
         console.error(`HTTP Request failed: ${error.message}`);
         return null;
