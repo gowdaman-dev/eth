@@ -1,15 +1,16 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router";
 import About from "./About";
 import Home from "./Home";
+import { Route, Switch } from "wouter";
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
-      </Routes>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/" component={Home} />
+
+      <Route path="/about" component={About} />
+
+      <Route>404: No such page!</Route>
+    </Switch>
   );
 }
 
